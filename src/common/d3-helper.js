@@ -88,7 +88,7 @@ export function textSubscript(text) {
             .text(text(d));
         }
 
-    })
+    });
   };
 }
 
@@ -96,14 +96,14 @@ export function textSize(text, fontSize='inherit', fontFamily='inherit', fontSty
   /* Source: https://gist.github.com/huytd/327e453c95ca3edadb32d0c867e2561b 
   Credits to: Huy Tr. */
   if (!d3) return;
-  var container = d3.select('body').append('svg');
+  const container = d3.select('body').append('svg');
   container.append('text')
     .style('font-size', fontSize)
     .style('font-style', fontStyle)
     .style('font-family', fontFamily)
     .attr('x','-9999').attr('y','-9999')
     .call(textSubscript(() => text)); // .text(text);
-  var size = container.node().getBBox();
+  const size = container.node().getBBox();
   container.remove();
   return { width: size.width, height: size.height };
 }
@@ -138,7 +138,7 @@ export function calcCircleDash(r, unit, fraction) {
 }
 export function circleDashArray(r, unit, fractions) {
   let str = '';
-  for (let i in fractions) {
+  for (const i in fractions) {
       str = str.concat(`${ calcCircleDash(r, unit, fractions[i]) }px `);
   }
   return str;

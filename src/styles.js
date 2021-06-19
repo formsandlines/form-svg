@@ -90,7 +90,7 @@ tree.basic.applyAxisStyles = function(axis) {
         .style('fill', this.color.base.toString())
         .attr('text-anchor', 'start');
 
-}
+};
 tree.basic.applyNodeStyles = function(nodes, nodePartitions) {
     const [leaves, sets, forms, reEntries, reChilds, rePoints, elements, vars, consts, unclear] = nodePartitions;
 
@@ -118,7 +118,7 @@ tree.basic.applyNodeStyles = function(nodes, nodePartitions) {
         .style('font-style', this.font.style)
         .style('font-family', this.font.family)
         .style('dominant-baseline','middle')
-        .style('fill', this.color.base.toString())
+        .style('fill', this.color.base.toString());
     vars.selectAll('text')
         .style('font-size', this.fontVar.size)
         .style('font-style', this.fontVar.style)
@@ -237,23 +237,24 @@ pack.gestalt.applyNodeStyles = function(nodes, nodePartitions, chart) {
     const defs = d3.select(chart.node().parentNode)
         .append('defs');
     const grad_1 = defs.append('radialGradient').attr('id', 'grad-indef-outin')
-        .attr('fx','20%')
+        .attr('fx','20%');
+    grad_1.append('stop')
+        .attr('offset','40%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 0.3);
         grad_1.append('stop')
-            .attr('offset','40%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 0.3);
-            grad_1.append('stop')
-            .attr('offset','90%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 0.8);
-        grad_1.append('stop')
-            .attr('offset','100%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 1.0);
+        .attr('offset','90%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 0.8);
+    grad_1.append('stop')
+        .attr('offset','100%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 1.0);
+
     const grad_2 = defs.append('radialGradient').attr('id', 'grad-indef-inout')
-        .attr('fx','20%')
-        grad_2.append('stop')
-            .attr('offset','10%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 1.0);
-        grad_2.append('stop')
-            .attr('offset','50%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 0.6);
-        grad_2.append('stop')
-            .attr('offset','60%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 0.4);
-        grad_2.append('stop')
-            .attr('offset','100%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 0.0);
+        .attr('fx','20%');
+    grad_2.append('stop')
+        .attr('offset','10%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 1.0);
+    grad_2.append('stop')
+        .attr('offset','50%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 0.6);
+    grad_2.append('stop')
+        .attr('offset','60%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 0.4);
+    grad_2.append('stop')
+        .attr('offset','100%').attr('stop-color', this.color.indef.toString() ).attr('stop-opacity', 0.0);
 
     forms.select('circle').filter(d => !d.data.unmarked)
         .style('stroke', 'none')
@@ -267,11 +268,11 @@ pack.gestalt.applyNodeStyles = function(nodes, nodePartitions, chart) {
         .style('fill', 'url(#grad-indef-inout)')
         .style('stroke-dasharray', d => circleDashArray(d.r, 8, [2/5, 3/5]) );
 
-    openReEntries.filter(d => ((d.parent.data.type !== 'reEntry') || !getRealDepth(d)%2) ) //  
-            .style('stroke', d => this.color.indef.toString());
+    openReEntries.filter(d => ((d.parent.data.type !== 'reEntry') || !getRealDepth(d)%2) ) //  
+        .style('stroke', d => this.color.indef.toString());
 
     openReEntries.filter(d => (d.parent.data.type === 'reEntry') && !d.parent.data.lastOpen)
-            .style('stroke', d => this.color.pos.toString());
+        .style('stroke', d => this.color.pos.toString());
 
     elements.selectAll('text')
         .style('font-size', this.font.size)

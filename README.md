@@ -13,7 +13,7 @@ Install [formform](https://github.com/formsandlines/formform) (optional, but may
 Then install the module:
 
 ```bash
-npm install form-svg
+npm install form-svg d3@^5.16.0
 ```
 
 ```js

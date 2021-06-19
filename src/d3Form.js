@@ -44,7 +44,7 @@ export default class D3Form {
         // set up design variables
         const design = styles.tree[this.styleClass];
         const [nodeSize, nodeSep] = [design.nodeSize, design.nodeSeparation];
-        const [fontSize, font] = [design.font.size, design.font.family];
+        // const [fontSize, font] = [design.font.size, design.font.family]; // ? not needed
 
         this.padding = { left: 10, right: 10, top: 10, bottom: 10 };
 
@@ -115,7 +115,7 @@ export default class D3Form {
         const links = chart.selectAll('.link')
             .data(tree.links()) 
             .enter().append('g')
-                .classed('link', true)
+                .classed('link', true);
 
         const nodes = chart.selectAll('.node')
             .data(tree.descendants())
@@ -133,14 +133,14 @@ export default class D3Form {
 
         // generate link partition selections
         const linkPartitions = resolveLinks(tree, links);
-        const [reChildLink, rePointLink] = linkPartitions;
+        // const [reChildLink, rePointLink] = linkPartitions; // ? not needed
 
         // generate node partition selections
         const nodePartitions = resolveNodes(tree, nodes);
-        const [leaves, sets, forms, reEntries, reChilds, rePoints, elements, vars, consts, unclear] = nodePartitions;
+        const [sets, rePoints, elements, vars, consts, unclear] = nodePartitions; // ? [leaves, forms, reEntries, reChilds] not needed
 
         // curved line generator
-        const line = d3.line().curve(d3.curveBasis);
+        // const line = d3.line().curve(d3.curveBasis); // ? not needed
 
         links
             .append('path')
@@ -150,7 +150,7 @@ export default class D3Form {
 
         nodes.filter(d => !d.data.unmarked)
             .append('circle')
-            .attr('r', nodeSize.w/2)
+            .attr('r', nodeSize.w/2);
         rePoints.append('text')
             .attr('x', nodeSize.w/2 + 2)
             .text(d => {
@@ -169,7 +169,7 @@ export default class D3Form {
 
         nodes
             .append('text')
-            .attr('x', nodeSize.w/2 + 2)
+            .attr('x', nodeSize.w/2 + 2);
         
         vars.selectAll('text')
             .call(textSubscript(d => d.data.symbol));
@@ -234,7 +234,7 @@ export default class D3Form {
             else if(d.data.value) {
                 rad = textSize(d.data.value+'', fontSize, font).width /2;
             }
-            else if(d.data.children || d.data.type === 'reEntryPoint' || d.data.type === 'space') rad = 0;
+            else if(d.data.children || d.data.type === 'reEntryPoint' || d.data.type === 'space') rad = 0;
             return rad;
         });
         const pack = layout(root);
@@ -251,7 +251,7 @@ export default class D3Form {
 
         // generate node partition selections
         const nodePartitions = resolveNodes(pack, nodes);
-        const [leaves, sets, forms, reEntries, reChilds, rePoints, elements, vars, consts, unclear] = nodePartitions;
+        const [sets, reEntries, rePoints, vars, consts, unclear] = nodePartitions; // ? [leaves, forms, reChilds, elements] not needed
 
         // define detailled structure/logic
 
@@ -268,7 +268,7 @@ export default class D3Form {
             `skewX(-30) translate(${-(d.r - padding)},
             ${-(textSize('x',fontSize, font).height + padding*2)/2})`)
             .attr('width', d => d.r*2 - padding*2)
-            .attr('height', d => (textSize('x',fontSize, font).height + padding*2))
+            .attr('height', d => (textSize('x',fontSize, font).height + padding*2));
         unclear.append('text')
             .call(textSubscript(d => d.data.symbol));
 
@@ -317,7 +317,7 @@ export default class D3Form {
             .edgeMargins(d => !(isContainer(d) && !d.parent.parent && d.parent.data.unmarked) )
             .isContainer(d => isContainer(d))
             .padding(d => {
-                let p = {left: 0, right: 0, top: 0, bottom: 0};
+                const p = {left: 0, right: 0, top: 0, bottom: 0};
                 
                 if (isContainer(d)) {
                     p.left = p.right = formPadding.hz;
@@ -330,7 +330,7 @@ export default class D3Form {
                 return p;
                 })
             .margin(d => {
-                let m = {left: 0, right: 0, top: 0, bottom: 0};
+                const m = {left: 0, right: 0, top: 0, bottom: 0};
                 
                 if (isContainer(d)) {
                     m.top = formMargin.top;
@@ -377,14 +377,14 @@ export default class D3Form {
                 }
                 if (d.data.type === 'reEntry' && d.children.length <= 2 && d.children[0].data.type === 'reEntryPoint') {
                     const text = d.data.reEven ? labels.reEven : labels.reOdd;
-                    let txtSz = textSize(text, fontContext.size, fontContext.family, fontContext.style);
+                    const txtSz = textSize(text, fontContext.size, fontContext.family, fontContext.style);
                     w = txtSz.width + dataLabelPad*2;
                     w = w < minFormSize.width ? minFormSize.width : w;
                 }
                 return {width: w, height: h};
                 })
             .maxLineWidth(d => {
-                let w = maxLineWidth;
+                const w = maxLineWidth;
                 return w;
                 })
             .nodeSize(d => {
@@ -433,7 +433,7 @@ export default class D3Form {
 
         // generate node partition selections
         const nodePartitions = resolveNodes(boxmodel, nodes);
-        const [leaves, sets, forms, reEntries, reChilds, rePoints, elements, vars, consts, unclear] = nodePartitions;
+        const [forms, reEntries, vars, consts, unclear] = nodePartitions; // ? [leaves, sets, reChilds, rePoints, elements] not in use
 
         // define detailled structure/logic
 
@@ -467,7 +467,7 @@ export default class D3Form {
             .classed('unclearMark',true)
             .attr('transform', d => `skewX(-30) translate(${unclDiff(d)},${0})`)
             .attr('width', d => ((d.x1-d.x0) - unclDiff(d) ))
-            .attr('height', d => (d.y1-d.y0) )
+            .attr('height', d => (d.y1-d.y0) );
         unclear.append('text')
             .attr('x',d => unclDiff(d) + unclearPad.hz )
             .attr('y',d => (d.y1-d.y0) -unclearPad.vt  - ((d.data.symbol.split('_').length > 1) ? 6 : 0) )
@@ -491,10 +491,6 @@ export default class D3Form {
         //     [root, layout, chart, boxmodel, design];
     }
 
-    static force(data) {
-
-    }
-
 }
 
 
@@ -507,18 +503,18 @@ function resolveNodes(root, nodes) {
   const leaves = nodes.filter(d => root.leaves().filter(l => l === d).pop() )
       .classed('leaf', true);
 
-  const sets = nodes.filter(d => d.data.type === 'form' || d.data.type === 'reEntry')
-      .classed('form', true)
+  const sets = nodes.filter(d => d.data.type === 'form' || d.data.type === 'reEntry')
+      .classed('form', true);
   const forms = sets.filter(d => d.data.type === 'form')
       .classed('form', true);
   const reEntries = sets.filter(d => d.data.type === 'reEntry')
       .classed('reEntry', true);
 
-  const elements = nodes.filter(d => !(d.data.type === 'form' || d.data.type === 'reEntry'))
+  const elements = nodes.filter(d => !(d.data.type === 'form' || d.data.type === 'reEntry'))
       .classed('element', true);
   const vars = elements.filter(d => d.data.type === 'var')
       .classed('var', true);
-  let consts = elements.filter(d => d.data.type === 'const')
+  const consts = elements.filter(d => d.data.type === 'const')
       .classed('const', true);
   consts.unmarked = elements.filter(d => d.data.value == 0).classed('unmarked', true);
   consts.marked = elements.filter(d => d.data.value == 1).classed('marked', true);
@@ -548,13 +544,13 @@ function resolveLinks(root, links) {
   return [reChildLink, rePointLink];
 }
 
-function isText(node) { return node.data.type === 'var' || node.data.type === 'const' || node.data.type === 'unclear'; }
+function isText(node) { return node.data.type === 'var' || node.data.type === 'const' || node.data.type === 'unclear'; }
 
-function isContainer(node) { return node.data.type === 'form' || node.data.type === 'reEntry'; }
+function isContainer(node) { return node.data.type === 'form' || node.data.type === 'reEntry'; }
 
 function reParentLastOpen(node) {
-let reParent = node.ancestors().filter(d => d.data.type === 'reEntry').shift();
+const reParent = node.ancestors().filter(d => d.data.type === 'reEntry').shift();
 return reParent.data.lastOpen;
 }
 
-function skewDiff(height,degrees=30) { return Math.tan((degrees*(Math.PI/180))) * height; };
+function skewDiff(height,degrees=30) { return Math.tan((degrees*(Math.PI/180))) * height; }
